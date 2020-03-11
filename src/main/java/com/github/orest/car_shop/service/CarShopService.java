@@ -35,8 +35,6 @@ public class CarShopService {
             }
         });
 
-        //Stream.of(allCars).forEach(car -> {});
-
         if (foundCars.size() > 0) {
             System.out.println("At this moment we have - " + foundCars.size() + " records with brand - " + brand);
             System.out.println("Available models is: ");
