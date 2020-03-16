@@ -7,9 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CarShopService {
+
+    public enum winner {
+        user,
+        system;
+    }
 
     //@SneakyThrows need to discuss this (interesting lombok annotation)
     public static void validateCars(List<Car> allCars) {
@@ -27,15 +33,7 @@ public class CarShopService {
 
         validateCars(allCars);
 
-        //Stream<Car> foundCars = Stream.empty();
-        List<Car> foundCars = new ArrayList<>();
-        allCars.forEach(car -> {
-            if (car.getBrand().equals(brand)) {
-                foundCars.add(car);
-            }
-        });
-
-        //Stream.of(allCars).forEach(car -> {});
+        List<Car> foundCars = allCars.stream().filter(car -> car.getBrand().equals(brand)).collect(Collectors.toList());
 
         if (foundCars.size() > 0) {
             System.out.println("At this moment we have - " + foundCars.size() + " records with brand - " + brand);
@@ -55,12 +53,7 @@ public class CarShopService {
 
         validateCars(allCars);
 
-        List<Car> foundModel = new ArrayList<>();
-        allCars.forEach(car -> {
-            if (car.getBrand().equals(model)) {
-                foundModel.add(car);
-            }
-        });
+        List<Car> foundModel= allCars.stream().filter(car -> car.getModel().equals(model)).collect(Collectors.toList());
 
         if (foundModel.size() > 0) {
             System.out.println("At this moment we have - " + foundModel.get(0).getQuantity() + " cars of " + model + " with price - " + foundModel.get(0).getPrice());
@@ -112,7 +105,7 @@ public class CarShopService {
                     System.out.println("Please enter a number, you entered - '" + input.next() + "'");
                 } else {
                     price = input.nextInt();
-                    winner = getRandomPriceForAuction(price, foundModel);
+                    winner = getRandomPriceForAuction(price, foundModel).toString();
                     if (winner.equals("user")) {
                         System.out.println("You won - " + foundModel.get(0).getBrand() + " " + foundModel.get(0).getModel() + " for the: " + price + " USD");
                     } else {
@@ -130,18 +123,18 @@ public class CarShopService {
     }
 
     // this method generate random price and compare with user input and return winner name
-    public static String getRandomPriceForAuction(int price, List<Car> foundModel) {
+    public static winner getRandomPriceForAuction(int price, List<Car> foundModel) {
         List<Integer> randomPrice = new ArrayList<>();
         int max = foundModel.get(0).getPrice() + Math.round(foundModel.get(0).getPrice() / 10);
         int min = foundModel.get(0).getPrice() - Math.round(foundModel.get(0).getPrice() / 10);
-        String winner = "user";
 
         for (int num : new int[]{1,2}) {
             randomPrice.add(new Random().nextInt(max) + min);
         }
         if (randomPrice.get(0) < price && randomPrice.get(1) < price)  {
-            winner = "system";
+            return winner.system;
+        } else {
+            return winner.user;
         }
-        return winner;
     }
 }
