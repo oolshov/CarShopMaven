@@ -13,8 +13,8 @@ import java.util.stream.Stream;
 public class CarShopService {
 
     public enum winner {
-        user,
-        system;
+        USER,
+        SYSTEM;
     }
 
     //@SneakyThrows need to discuss this (interesting lombok annotation)
@@ -49,7 +49,7 @@ public class CarShopService {
     }
 
     // this method search for available model of car and return Car array
-    public static List<Car> getModel(String model, List<Car> allCars) throws IllegalArgumentException {
+    public static List<Car> getModel(String model, List<Car> allCars) {
 
         validateCars(allCars);
 
@@ -132,9 +132,9 @@ public class CarShopService {
             randomPrice.add(new Random().nextInt(max) + min);
         }
         if (randomPrice.get(0) < price && randomPrice.get(1) < price)  {
-            return winner.system;
+            return winner.SYSTEM;
         } else {
-            return winner.user;
+            return winner.USER;
         }
     }
 }
