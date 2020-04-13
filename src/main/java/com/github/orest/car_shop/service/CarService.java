@@ -2,15 +2,16 @@ package com.github.orest.car_shop.service;
 
 import com.github.orest.car_shop.model.Car;
 import com.github.orest.car_shop.exceptions.*;
+import org.omg.CORBA.ObjectHolder;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class CarShopService {
+public class CarService {
 
     public enum winner {
         USER,
@@ -63,12 +64,17 @@ public class CarShopService {
         return foundModel;
     }
 
-    // this method print all available cars
-    public static void printAllCars(List<Car> allCars) {
+    // this method return all available cars from DB
+    public static List<Car> getAllCars() throws SQLException {
 
-        validateCars(allCars);
+        ResultSet rs = new DBWorkerService().getStatement().executeQuery("SELECT * FROM car;");
+        List<Car> cars = new ArrayList();
 
-        allCars.forEach(car -> System.out.println(car.getBrand() + " " + car.getModel() + " - " + car.getQuantity() + " car(s), color - " + car.getColor() + ", price begins from - " + car.getPrice()));
+        while (rs.next()) {
+            cars.add(new Car (rs.getInt("id"), rs.getString("brand"), rs.getString("model"), rs.getString("color"), rs.getString("damage"), rs.getInt("price"), rs.getInt("quantity")));
+        }
+        validateCars(cars);
+        return cars;
     }
 
     // method with stored messages
@@ -85,12 +91,12 @@ public class CarShopService {
     }
 
     // this method calls an auction
-    public static void startAuction(List<Car> allCars, Scanner input) {
+    public static void startAuction(List<Car> allCars, Scanner input) throws SQLException {
 
         validateCars(allCars);
         int price;
         String text;
-        printAllCars(allCars);
+        getAllCars();
         System.out.println(getMessage("model"));
         text = input.nextLine();
 
