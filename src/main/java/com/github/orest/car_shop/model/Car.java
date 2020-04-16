@@ -3,6 +3,7 @@ package com.github.orest.car_shop.model;
 import lombok.*;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class Car {
 

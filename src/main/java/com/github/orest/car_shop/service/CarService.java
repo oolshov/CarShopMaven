@@ -2,7 +2,7 @@ package com.github.orest.car_shop.service;
 
 import com.github.orest.car_shop.model.Car;
 import com.github.orest.car_shop.exceptions.*;
-import org.omg.CORBA.ObjectHolder;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -71,8 +71,13 @@ public class CarService {
         List<Car> cars = new ArrayList();
 
         while (rs.next()) {
-            cars.add(new Car (rs.getInt("id"), rs.getString("brand"), rs.getString("model"), rs.getString("color"), rs.getString("damage"), rs.getInt("price"), rs.getInt("quantity")));
+            Car car = new Car();
+            car.setId(rs.getInt("id")); car.setBrand(rs.getString("brand")); car.setModel(rs.getString("model"));
+            car.setColor(rs.getString("color")); car.setDamage(rs.getString("damage")); car.setPrice(rs.getInt("price"));
+            car.setQuantity(rs.getInt("quantity"));
+            cars.add(car);
         }
+        System.out.println(cars);
         validateCars(cars);
         return cars;
     }
