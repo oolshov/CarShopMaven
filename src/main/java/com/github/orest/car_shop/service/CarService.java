@@ -3,6 +3,9 @@ package com.github.orest.car_shop.service;
 import com.github.orest.car_shop.model.Car;
 import com.github.orest.car_shop.exceptions.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.AbstractApplicationContext;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -67,7 +70,10 @@ public class CarService {
     // this method return all available cars from DB
     public static List<Car> getAllCars() throws SQLException {
 
-        ResultSet rs = new DBWorkerService().getStatement().executeQuery("SELECT * FROM car;");
+        //ResultSet rs = new DBWorkerService().getStatement().executeQuery("SELECT * FROM car;");
+        //System.out.println(new DBWorkerService());
+        ResultSet rs = new DBWorkerService().connectDB().executeQuery("SELECT * FROM car;");
+
         List<Car> cars = new ArrayList();
 
         while (rs.next()) {
