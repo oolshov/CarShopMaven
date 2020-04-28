@@ -1,45 +1,24 @@
 package com.github.orest.car_shop;
-import com.github.orest.car_shop.model.Car;
-import com.github.orest.car_shop.service.CarShopService;
-import com.github.orest.car_shop.storage.CarStorage;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.*;
+import java.sql.SQLException;
 
 @SpringBootApplication
+//@RestController
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         SpringApplication.run(Main.class, args);
 
-        List<Car> allCars = CarStorage.getAvailableCars();
-        String text;
+        //AbstractApplicationContext  context = new AnnotationConfigApplicationContext(AppConfig.class);
+        //DBWorkerService service = (DBWorkerService) context.getBean("DBWorkerService");
 
-        Scanner input = new Scanner(System.in);
+        //service.connectDB();
 
-        System.out.println(CarShopService.getMessage("main"));
-        text = input.nextLine();
-        if (text.equals("all")){
-            CarShopService.printAllCars(allCars);
-            System.out.println(CarShopService.getMessage("main"));
-            text = input.nextLine();
-        }
+        //DBWorkerService service = new DBWorkerService();
+        //System.out.println(service.getUrl());
+        System.out.println("Hello");
 
-        while (!text.equals("q")) {
-            if (text.equals("all")){
-                CarShopService.printAllCars(allCars);
-                System.out.println(CarShopService.getMessage("main"));
-                text = input.nextLine();
-            } else if (text.equals("a")) {
-                CarShopService.startAuction(allCars, input);
-                System.out.println(CarShopService.getMessage("main"));
-                text = input.nextLine();
-            } else {
-                CarShopService.getBrand(text, allCars);
-                System.out.println(CarShopService.getMessage("main"));
-                text = input.nextLine();
-            }
-        }
     }
 }

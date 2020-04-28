@@ -2,15 +2,19 @@ package com.github.orest.car_shop.service;
 
 import com.github.orest.car_shop.model.Car;
 import com.github.orest.car_shop.exceptions.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.AbstractApplicationContext;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class CarShopService {
+public class CarService {
 
     public enum winner {
         USER,
@@ -63,12 +67,25 @@ public class CarShopService {
         return foundModel;
     }
 
-    // this method print all available cars
-    public static void printAllCars(List<Car> allCars) {
+    // this method return all available cars from DB
+    public static List<Car> getAllCars() throws SQLException {
 
-        validateCars(allCars);
+        //ResultSet rs = new DBWorkerService().getStatement().executeQuery("SELECT * FROM car;");
+        //System.out.println(new DBWorkerService());
+        ResultSet rs = new DBWorkerService().connectDB().executeQuery("SELECT * FROM car;");
 
-        allCars.forEach(car -> System.out.println(car.getBrand() + " " + car.getModel() + " - " + car.getQuantity() + " car(s), color - " + car.getColor() + ", price begins from - " + car.getPrice()));
+        List<Car> cars = new ArrayList();
+
+        while (rs.next()) {
+            Car car = new Car();
+            car.setId(rs.getInt("id")); car.setBrand(rs.getString("brand")); car.setModel(rs.getString("model"));
+            car.setColor(rs.getString("color")); car.setDamage(rs.getString("damage")); car.setPrice(rs.getInt("price"));
+            car.setQuantity(rs.getInt("quantity"));
+            cars.add(car);
+        }
+        System.out.println(cars);
+        validateCars(cars);
+        return cars;
     }
 
     // method with stored messages
@@ -85,12 +102,12 @@ public class CarShopService {
     }
 
     // this method calls an auction
-    public static void startAuction(List<Car> allCars, Scanner input) {
+    public static void startAuction(List<Car> allCars, Scanner input) throws SQLException {
 
         validateCars(allCars);
         int price;
         String text;
-        printAllCars(allCars);
+        getAllCars();
         System.out.println(getMessage("model"));
         text = input.nextLine();
 
