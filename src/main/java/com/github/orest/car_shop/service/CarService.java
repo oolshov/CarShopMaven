@@ -2,6 +2,8 @@ package com.github.orest.car_shop.service;
 
 import com.github.orest.car_shop.model.Car;
 import com.github.orest.car_shop.exceptions.*;
+import com.github.orest.car_shop.repository.CarRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,10 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class CarService {
+
+    // need to discuss this
+    @Autowired
+    private CarRepository carRepository;
 
     public enum winner {
         USER,
@@ -68,24 +74,16 @@ public class CarService {
     }
 
     // this method return all available cars from DB
-    public static List<Car> getAllCars() throws SQLException {
+    public Iterable<Car> getAllCars() {
 
-        //ResultSet rs = new DBWorkerService().getStatement().executeQuery("SELECT * FROM car;");
-        //System.out.println(new DBWorkerService());
-        ResultSet rs = new DBWorkerService().connectDB().executeQuery("SELECT * FROM car;");
+        // need to discuss this
+        System.out.println(carRepository.findAll());
+        return carRepository.findAll();
+    }
 
-        List<Car> cars = new ArrayList();
-
-        while (rs.next()) {
-            Car car = new Car();
-            car.setId(rs.getInt("id")); car.setBrand(rs.getString("brand")); car.setModel(rs.getString("model"));
-            car.setColor(rs.getString("color")); car.setDamage(rs.getString("damage")); car.setPrice(rs.getInt("price"));
-            car.setQuantity(rs.getInt("quantity"));
-            cars.add(car);
-        }
-        System.out.println(cars);
-        validateCars(cars);
-        return cars;
+    public static void fff() {
+        // need to discuss this
+        // getAllCars();
     }
 
     // method with stored messages
@@ -102,7 +100,7 @@ public class CarService {
     }
 
     // this method calls an auction
-    public static void startAuction(List<Car> allCars, Scanner input) throws SQLException {
+    public void startAuction(List<Car> allCars, Scanner input) throws SQLException {
 
         validateCars(allCars);
         int price;
