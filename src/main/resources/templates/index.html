@@ -5,9 +5,31 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<p th:text="'Here is a list of available cars:'" />
-<ol>
-    <li th:each="car : ${cars}" th:text="${car.toString()}"></li>
-</ol>
+
+<p th:text="'Type here to search for a car:'" />
+<form th:action="@{find}" method="post">
+    Search:
+    <input type="text" name="find"/>
+    <br/>
+    <input type="submit" value="Search" />
+</form>
+
+<p th:text="${available_text}" />
+<div>
+    <table border="1">
+        <tr>
+            <th th:each="field : ${fields}" th:text="${field.getName()}"></th>
+        </tr>
+        <tr th:each="car : ${cars}">
+            <td th:text="${car.getId()}"></td>
+            <td th:text="${car.getBrand()}"></td>
+            <td th:text="${car.getModel()}"></td>
+            <td th:text="${car.getColor()}"></td>
+            <td th:text="${car.getDamage()}"></td>
+            <td th:text="${car.getPrice()}"></td>
+            <td th:text="${car.getQuantity()}"></td>
+        <tr/>
+    </table>
+</div>
 </body>
 </html>

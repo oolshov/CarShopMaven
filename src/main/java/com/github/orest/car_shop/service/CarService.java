@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+@Service
 public class CarService {
 
-    // need to discuss this
     @Autowired
     private CarRepository carRepository;
 
@@ -28,7 +29,7 @@ public class CarService {
     }
 
     //@SneakyThrows need to discuss this (interesting lombok annotation)
-    public static void validateCars(List<Car> allCars) {
+    public void validateCars(List<Car> allCars) {
         if (allCars == null || allCars.size() < 1) {
             try {
                 throw new ZeroCarStorageException(getMessage("zero allCars"));
@@ -39,7 +40,7 @@ public class CarService {
     }
 
     // this method search for available brand and return Car array
-    public static List<Car> getBrand(String brand, List<Car> allCars) {
+    public List<Car> getBrand(String brand, List<Car> allCars) {
 
         validateCars(allCars);
 
@@ -59,7 +60,7 @@ public class CarService {
     }
 
     // this method search for available model of car and return Car array
-    public static List<Car> getModel(String model, List<Car> allCars) {
+    public List<Car> getModel(String model, List<Car> allCars) {
 
         validateCars(allCars);
 
@@ -75,19 +76,12 @@ public class CarService {
 
     // this method return all available cars from DB
     public Iterable<Car> getAllCars() {
-
-        // need to discuss this
         System.out.println(carRepository.findAll());
         return carRepository.findAll();
     }
 
-    public static void fff() {
-        // need to discuss this
-        // getAllCars();
-    }
-
     // method with stored messages
-    public static String getMessage(String message_type){
+    public String getMessage(String message_type){
         String message;
         switch (message_type) {
             case "main": message = "\n\nPlease enter car brand you want to search for.  ('q' to Quit, 'all' to see all cars list, 'a' to start auction): "; break;
@@ -138,7 +132,7 @@ public class CarService {
     }
 
     // this method generate random price and compare with user input and return winner name
-    public static winner getRandomPriceForAuction(int price, List<Car> foundModel) {
+    public winner getRandomPriceForAuction(int price, List<Car> foundModel) {
         List<Integer> randomPrice = new ArrayList<>();
         int max = foundModel.get(0).getPrice() + Math.round(foundModel.get(0).getPrice() / 10);
         int min = foundModel.get(0).getPrice() - Math.round(foundModel.get(0).getPrice() / 10);

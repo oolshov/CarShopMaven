@@ -6,6 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.awt.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +30,8 @@ public class Car {
 
     @Override
     public String toString() {
-        return  " brand: " + brand +
+        return  "id:" + id +
+                " brand: " + brand +
                 ", model: " + model +
                 ", color: " + color +
                 ", damage: " + damage +
