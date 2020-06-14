@@ -55,13 +55,13 @@ public class Car {
         this.quantity = quantity;
     }
 
-    public void update_record(String brand, String model, String color, String damage, int price, int quantity) {
-        this.brand = brand;
-        this.model = model;
-        this.color = color;
-        this.damage = damage;
-        this.price = price;
-        this.quantity = quantity;
+    public void updateRecord(Car car) {
+        this.brand = car.brand;
+        this.model = car.model;
+        this.color = car.color;
+        this.damage = car.damage;
+        this.price = car.price;
+        this.quantity = car.quantity;
     }
 
     @Override

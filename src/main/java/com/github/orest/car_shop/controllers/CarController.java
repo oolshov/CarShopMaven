@@ -55,7 +55,7 @@ public class CarController {
             attributes.addFlashAttribute(car);
             return ("redirect:/edit_car?id="+id);
         } else {
-            carRepository.findById(id).update_record(car.getBrand(), car.getModel(), car.getColor(), car.getDamage(), car.getPrice(), car.getQuantity());
+            carRepository.findById(id).updateRecord(car);
             carRepository.save(carRepository.findById(id));
             attributes.addFlashAttribute("car_updated", "Car is successfully updated");
         }
