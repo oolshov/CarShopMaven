@@ -4,6 +4,7 @@ import com.github.orest.car_shop.exceptions.CarNotFoundException;
 import com.github.orest.car_shop.model.Car;
 import com.github.orest.car_shop.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,50 +23,46 @@ import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-@Controller
 @RestController
+@RequestMapping("/api/cars")
 public class CarApiController {
 
     @Autowired
     private CarRepository carRepository;
 
 
-    @GetMapping("/api/cars")
-    Iterable<Car> all() {
+    @GetMapping
+    Iterable<Car> getAllCars() {
         return carRepository.findAll();
     }
 
-    @PostMapping("/api/cars")
-    Car newCar(@Valid @RequestBody Car newCar) {
+    @PostMapping
+    Car createCar(@Valid @RequestBody Car newCar) {
         return carRepository.save(newCar);
     }
 
-    @GetMapping("/api/cars/{id}")
-    Car one(@PathVariable int id) {
-
-        try {
-            return carRepository.findById(id);
-        } catch (NullPointerException e) {
-            throw new CarNotFoundException(id);
-        }
+    @GetMapping("/{id}")
+    Car getCar(@PathVariable int id) {
+        return carRepository.findById(id);
     }
 
-    @PutMapping("/api/cars/{id}")
-    Car replaceCar(@Valid @RequestBody Car newCar, @PathVariable int id) {
-
+    //@ExceptionHandler(NullPointerException.class)
+    @PutMapping("/{id}")
+    Car updateCar(@Valid @RequestBody Car newCar, @PathVariable int id) {
         try {
             carRepository.findById(id).updateRecord(newCar);
             return carRepository.save(carRepository.findById(id));
         } catch (NullPointerException e) {
             throw new CarNotFoundException(id);
         }
+
     }
 
-    @DeleteMapping("/api/cars/{id}")
+    @DeleteMapping("/{id}")
     void deleteCar(@PathVariable int id) {
         try {
             carRepository.deleteById(id);
-        } catch (NullPointerException e) {
+        } catch (EmptyResultDataAccessException e) {
             throw new CarNotFoundException(id);
         }
     }
