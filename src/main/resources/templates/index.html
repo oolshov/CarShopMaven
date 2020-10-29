@@ -6,19 +6,22 @@
 </head>
 <body>
 
+<div class="alert alert-primary" style="color: green" role="alert" th:text="${car_updated}" th:if="${car_updated}"></div>
 <p th:text="'Type here to search for a car:'" />
 <form th:action="@{find}" method="post">
     Search:
     <input type="text" name="find"/>
-    <br/>
     <input type="submit" value="Search" />
 </form>
 
 <p th:text="${available_text}" />
+
+<a th:href="@{/new_car}">Add new car</a>
 <div>
     <table border="1">
         <tr>
             <th th:each="field : ${fields}" th:text="${field.getName()}"></th>
+            <th> actions </th>
         </tr>
         <tr th:each="car : ${cars}">
             <td th:text="${car.getId()}"></td>
@@ -28,6 +31,10 @@
             <td th:text="${car.getDamage()}"></td>
             <td th:text="${car.getPrice()}"></td>
             <td th:text="${car.getQuantity()}"></td>
+            <td>
+                <a th:href="@{/edit_car(id=${car.getId()})}">edit</a>
+                <a th:href="@{/delete_car(id=${car.getId()})}">delete</a>
+            </td>
         <tr/>
     </table>
 </div>

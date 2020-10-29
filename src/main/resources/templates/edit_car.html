@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+    <body>
+        <p th:text="${available_text}" />
+        <form th:action="@{update_car}" method="post">
+            <div th:each="car : ${cars}">
+                <p> Brand: <input type="text" name="brand" th:value="${car.getBrand()}"/> </p>
+                <div class="invalid-feedback" style="color: #ff0000" role="alert" th:text="${brandError}" th:if="${brandError}"></div>
+                <p> Model: <input type="text" name="model" th:value="${car.getModel()}"/> </p>
+                <div class="invalid-feedback" style="color: #ff0000" role="alert" th:text="${modelError}" th:if="${modelError}"></div>
+                <p> Color: <input type="text" name="color" th:value="${car.getColor()}"/> </p>
+                <div class="invalid-feedback" style="color: #ff0000" role="alert" th:text="${colorError}" th:if="${colorError}"></div>
+                <p> Damage: <input type="text" name="damage" th:value="${car.getDamage()}"/> </p>
+                <div class="invalid-feedback" style="color: #ff0000" role="alert" th:text="${damageError}" th:if="${damageError}"></div>
+                <p> Price: <input type="text" name="price" th:value="${car.getPrice()}"/> </p>
+                <div class="invalid-feedback" style="color: #ff0000" role="alert" th:text="${priceError}" th:if="${priceError}"></div>
+                <p> Quantity: <input type="text" name="quantity" th:value="${car.getQuantity()}"/> </p>
+                <div class="invalid-feedback" style="color: #ff0000" role="alert" th:text="${quantityError}" th:if="${quantityError}"></div>
+                <br>
+                <input type="hidden" name="id" th:value="${car.getId()}"/>
+                <input type="submit" value="Save"/>
+                <a class="btn btn-default btn-close" th:href="@{/}">Cancel</a>
+            </div>
+        </form>
+    </body>
+</html>
