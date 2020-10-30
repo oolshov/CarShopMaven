@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
@@ -30,8 +32,10 @@ public class CarService {
 
     //@SneakyThrows need to discuss this (interesting lombok annotation)
     public void validateCars(List<Car> allCars) {
+        System.out.println("Before if");
         if (allCars == null || allCars.size() < 1) {
             try {
+                System.out.println("in try");
                 throw new ZeroCarStorageException(getMessage("zero allCars"));
             } catch (ZeroCarStorageException e) {
                 e.printStackTrace();
@@ -41,7 +45,7 @@ public class CarService {
 
     // this method search for available brand and return Car array
     public List<Car> getBrand(String brand, List<Car> allCars) {
-
+        System.out.println("Before validate");
         validateCars(allCars);
 
         List<Car> foundCars = allCars.stream().filter(car -> car.getBrand().equals(brand)).collect(Collectors.toList());
